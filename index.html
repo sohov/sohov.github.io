@@ -1,0 +1,390 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>首页</title>
+<link rel="stylesheet" style="text/css" href="css/index.css"/>
+</head>
+<body>
+<div class="top">
+	<img  style="height: 120px;width: 960px;"src="img/2.png"/>
+	
+</div>
+
+<div class="title">
+				<div class="dh">
+					<ul>
+						<li><a href="#"><b>网站首页</b></a></li>
+						<li><a href="旅游资讯.html"><b>旅游资讯</b></a></li>
+						<li><a href="南阳生态.html"><b>南阳生态</b></a></li>
+						<li><a href="南阳美景.html"><b>南阳美景</b></a></li>
+						<li><a href="#"><b>旅游商城</b></a></li>
+						<li><a href="#"><b>旅游路线</b></a></li>
+						<li><a href="#"><b>酒店推荐</b></a></li>
+					</ul>
+				 </div>
+</div>
+
+<div class="un">
+    <div class="ti">
+    	<div id="til">
+    	  <p><strong>旅游路线</strong></p>
+    	</div>
+    	<div id="tie">
+    		<ul>
+				<li><a href="#">当季出发</a></li>
+    			<hr style="border-style:dashed;border-width: 0.1em;color:#f2dfa7;"/>
+				<li><a href="#">国内旅游</a></li>
+    			<hr style="border-style:dashed;border-width: 0.1em;color:#f2dfa7;"/>
+    			<li><a href="#">国外旅游</a></li>
+    			<hr style="border-style:dashed;border-width: 0.1em;color:#f2dfa7;"/>
+    			<li><a href="#">主题游</a></li>
+    			<hr style="border-style:dashed;border-width: 0.1em;color:#f2dfa7;"/>
+    			<li><a href="#">周边旅游</a></li>
+    			<hr style="border-style:dashed;border-width: 0.1em;color:#f2dfa7;"/>
+    			<li><a href="#">自助游</a></li>
+    		</ul>
+    	</div>
+	</div>
+    
+    <div id="box" class="all">
+  <div class="inner">  <!-- 相框-->
+    <ul>
+      <li><a href="#"><img style="width: 470px;height: 282px;"src="img/0fd80f847ea39dc5bd78f9ed81298007.jpg"alt=""></a></li>
+      <li><a href="#"><img style="width: 470px;height: 282px;"src="img/1f59e1c2b37228472fc21850b9e6ecd4.jpg"alt=""></a></li>
+      <li><a href="#"><img style="width: 470px;height: 282px;"src="img/6947145_150220631172_2.jpg"alt=""></a></li>
+      <li><a href="#"><img style="width: 470px;height: 282px;"src="img/t01aec9732462fe4f56.jpg"alt=""></a></li>
+ 
+    </ul>
+    <ol> <!--里面存放小圆点-->
+ 
+    </ol>
+  </div>
+  <div class="focusD" id="arr">
+    <span id="left"><</span>
+    <span id="right">></span>
+  </div>
+</div> 
+
+<script>
+  var index=0;
+  //获取最外面的div
+  var box = my$("box");
+  //获取相框
+  var inner = box.children[0];
+  //获取去相框的宽度
+  var imgWidth = inner.offsetWidth;
+  // 获取ul
+  var ulObj = inner.children[0];
+  //获取ul中所有的li
+  var list = ulObj.children;
+  //获取ol
+  var olObj = inner.children[1];
+  //获取焦点
+  var arr = my$("arr");
+ 
+  //创建小按钮-----根据ul中li的个数
+  for (var i = 0; i < list.length; i++) {
+    var liObjs = document.createElement("li");
+    olObj.appendChild(liObjs);
+    liObjs.innerHTML = (i + 1);
+    //在ol中每个li中增加自定义属性，添加索引值
+    liObjs.setAttribute("index", i);
+    //注册鼠标进入事件
+    liObjs.onmouseover = function () {
+      //先干掉所有背景颜色
+      for (var j = 0; j < olObj.children.length; j++) {
+        olObj.children[j].removeAttribute("class");
+      }
+      //设置当前鼠标进来的类样式
+      this.className = "current";
+      //获取ol中li的索引值
+       index = this.getAttribute("index");
+      //移动ul
+      animate(ulObj, -index * imgWidth); //移动动画函数
+    };
+  }
+  //设置第一个ol中li的背景颜色
+  olObj.children[0].className = "current";
+  //克隆ol中第一个li放到最后一个
+  ulObj.appendChild(ulObj.children[0].cloneNode(true));
+ 
+ 
+  var timeId=setInterval(clickHandle,3000);
+ 
+  my$("box").onmouseover=function(){
+   arr.style.display="block";
+   clearInterval(timeId);
+  };
+    //点击右边按钮
+    my$("right").onclick=clickHandle;
+    function clickHandle() {
+      if (index==ulObj.children.length-1){
+        ulObj.style.left=0+"px";
+        index=0;
+      }
+      index++;
+      animate(ulObj,-index*imgWidth);
+      if (index==list.length-1){
+        olObj.children[0].className="current";
+        olObj.children[olObj.children.length-1].className="";
+      }else {
+        for (var i=0;i<olObj.children.length;i++){
+          olObj.children[i].className="";
+        }
+        olObj.children[index].className="current";
+      }
+    };
+    //点击左边按钮
+    my$("left").onclick=function () {
+      if (index==0){
+        index=list.length-1;
+        ulObj.style.left=-index*imgWidth+"px";
+      }
+      index--;
+      animate(ulObj,-index*imgWidth);
+      for (var i=0;i<olObj.children.length;i++){
+        olObj.children[i].className="";
+      }
+      olObj.children[index].className="current";
+    };
+ 
+  my$("box").onmouseout=function(){
+    arr.style.display="none";
+    timeId=setInterval(clickHandle,3000);
+  };
+ 
+ 
+ 
+  // 设置一个元素，移动到指定位置
+  function animate(element, target) {
+    clearInterval(element.timeId);
+    element.timeId = setInterval(function () {
+      var current = element.offsetLeft;
+      var step = 9;
+      step = current > target ? -step : step;
+      current += step;
+      if (Math.abs(target - current) > Math.abs(step)) {
+        element.style.left = current + "px";
+      } else {
+        clearInterval(element.timeId);
+        element.style.left = target + "px";
+      }
+    }, 10);
+  }
+　　function my$(id) {
+  　　 return document.getElementById(id);
+　　　　}
+</script>
+
+    
+   
+    <div class="ud">
+    	<div class="d1">
+    		<strong><b id="e1">热点</b><a>张家界玻璃栈道，极致地球绝版峰墙</a></strong>
+    		<ul>
+    			<li><small>蓬莱仙岛：凉快！南阳的朋友们可以去看看</small></li>
+    			<li><small>郑州地铁运营路线图，欢迎收藏！</small></li>
+    		</ul>
+    	</div><hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+    	<div class="d1">
+    		<strong><b id="e2">游记</b><a href="#">我的温州,杭州之行,把美图分享一下!!</a></strong>
+    		<ul>
+    			<li><small>西藏我还想去的地方!!!流连忘返!!!</small></li>
+    			<li><small>我的游记分享!!华山之行，相当值得回味和留</small></li>
+    		</ul>
+    	</div><hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+    	<div class="d1">
+    		<strong><b id="e3">攻略</b><a>4-5月开车去西藏，阿里，有一起的吗？</a></strong>
+    		<ul>
+    			<li><small>旅途中温馨驿站—张家界天天客栈</small></li>
+    			<li><small>一起去有山有水的张家界过土味新年</small></li>
+    		</ul>
+    	</div>
+    </div>
+</div>
+
+ <div class="con">   
+    <div class="tab" id="tab">
+      <div class="tab-title" id="tab-title">
+        <ul>
+            <li class="select"><a href="#">国内游</a></li>
+            <li><a href="#">周边游</a></li>
+            <li><a href="#">出境游</a></li>
+            
+        </ul>
+    </div>
+    <div class="tab-content" id="tab-content">
+        <div class="tabct" style="display: block">
+           <img style="width: 150px;height: 150px;"src="img/09-36-47-1740877884.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/09-49-40-902210442.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/09-38-28-1931972567.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/10-41-18-1204381302.jpg"/>
+            <ul>
+                <li><a href="#">张家界玻璃栈道，极致地球绝版峰墙，行走在无比惬意</a><b>2019-03-01</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">蓬莱仙岛：凉快！南阳的朋友们可以去看看</a><b>2019-08-01</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">郑州地铁运营路线图，欢迎收藏！</a><b>2019-07-30</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">白鹿原山下来，再一次来到昆明池</a><b>2019-07-29</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">张家界五日天门山玻璃桥，森林公园看日出，凤凰古城</a><b>2018-04-26</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">生活压力大暑假带小孩去湖南张家界旅游看看青山绿水</a><b>2019-06-20</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">4-5月开车去西藏，阿里，有一起的吗？</a><b>2019-04-09</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">旅途中温馨驿站—张家界天天客栈</a><b>2019-03-20</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">一起去有山有水的张家界过土味新年</a><b>2019-01-06</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">1-2月去东北雪上撒欢，有一起的吗？</a><b>2018-10-23</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+            </ul>
+        </div>
+           <div class="tabct" style="display: none">
+            <img style="width: 150px;height: 150px;"src="img/09-54-29-1326913289.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/10-04-55-1113061418.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/08-48-08-1947363869.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/08-57-53-1836258897.jpg"/>
+            <ul>
+                <li><a href="#">张家界五日天门山玻璃桥，森林公园看日出，凤凰古城</a><b>2018-04-26</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>           
+                <li><a href="#">蓬莱仙岛：凉快！南阳的朋友们可以去看看</a><b>2019-08-01</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">一起去有山有水的张家界过土味新年</a><b>2019-01-06</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">郑州地铁运营路线图，欢迎收藏！</a><b>2019-07-30</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/> 
+                <li><a href="#">旅途中温馨驿站—张家界天天客栈</a><b>2019-03-20</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">张家界玻璃栈道，极致地球绝版峰墙，行走在无比惬意</a><b>2019-03-01</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">白鹿原山下来，再一次来到昆明池</a><b>2019-07-29</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>              
+                <li><a href="#">生活压力大暑假带小孩去湖南张家界旅游看看青山绿水</a><b>2019-06-20</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">4-5月开车去西藏，阿里，有一起的吗？</a><b>2019-04-09</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>                              
+                <li><a href="#">1-2月去东北雪上撒欢，有一起的吗？</a><b>2018-10-23</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+            </ul>
+        </div>
+           <div class="tabct" style="display: none">
+           <img style="width: 150px;height: 150px;"src="img/10-51-47-1997402636.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/10-28-53-305652429.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/11-12-22-1004533286.jpg"/>
+           <img style="width: 150px;height: 150px;margin-left: 3px;"src="img/09-00-47-1065784743.jpg"/>
+            <ul>                
+                <li><a href="#">蓬莱仙岛：凉快！南阳的朋友们可以去看看</a><b>2019-08-01</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">生活压力大暑假带小孩去湖南张家界旅游看看青山绿水</a><b>2019-06-20</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">张家界玻璃栈道，极致地球绝版峰墙，行走在无比惬意</a><b>2019-03-01</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">1-2月去东北雪上撒欢，有一起的吗？</a><b>2018-10-23</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>          
+                <li><a href="#">白鹿原山下来，再一次来到昆明池</a><b>2019-07-29</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">旅途中温馨驿站—张家界天天客栈</a><b>2019-03-20</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">郑州地铁运营路线图，欢迎收藏！</a><b>2019-07-30</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">张家界五日天门山玻璃桥，森林公园看日出，凤凰古城</a><b>2018-04-26</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>              
+                <li><a href="#">4-5月开车去西藏，阿里，有一起的吗？</a><b>2019-04-09</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+                <li><a href="#">一起去有山有水的张家界过土味新年</a><b>2019-01-06</b></li>
+                <hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+             </ul>    
+        </div>
+    </div>
+</div>
+<script>
+    function $(id) {
+        return typeof id == "string" ? document.getElementById(id) : id;
+    }
+    window.onload = function() {
+        var titleName = $("tab-title").getElementsByTagName("li");
+        var tabContent = $("tab-content").getElementsByTagName("div");
+        if (titleName.length != tabContent.length) {
+            return;
+        }
+        for (var index = 0; index < titleName.length; index++) {
+            titleName[index].id = index;
+            titleName[index].onmouseover = function () {
+                for (var j = 0; j < titleName.length; j++) {
+                    titleName[j].className = "";
+                    tabContent[j].style.display = "none"
+                }
+                this.className = "select";
+                tabContent[this.id].style.display = "block";
+            }
+        }
+    }
+</script>
+	<div class="ne">
+		<div class="re"><p>热门景区排行</p></div>
+		<div class="te">
+			<ul>
+				<li><div id="ty"></div><a href="#">白鹿原山下来，再一次来到昆明池</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="ty"></div><a href="#">蓬莱仙岛：凉快！南阳的朋友们可以去看看</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="ty"></div><a href="#">去湖南张家界旅游看看青山绿水</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="ty"></div><a href="#">旅途中温馨驿站—张家界天天客栈</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="ty"></div><a href="#">4-5月开车去西藏，阿里，有一起的吗？</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">【18全年甘南全景 深度纯玩 周周发队】扎</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">12月 有去西藏的吗？无须开车，捡人！</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">10月左右稻城亚丁，色达，有一起去旅行的</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">金秋的北疆用心去体会，让心灵恬静地，在</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">【天空旅行2018】西藏17天藏地大穿越开始</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">【草原经典-越野深入 天天组队】呼伦贝尔</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+				<li><div id="tp"></div><a href="#">12月 有去西藏的吗？无须开车，捡人！</a></li>
+				<hr style="border-style:dashed;border-width: 0.1em;color:#d7d7d7;"/>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="bottom">
+	<div class="hi">
+	<ul>
+		<li><a href="#">南阳搜狐</a></li><li><a href="#">南阳网络营销</a></li><li><a href="#">南阳小程序开发</a></li><li><a href="#">新华旅游</a></li><li><a href="#">云南旅游</a></li><li><a href="#">吾爱旅游网</a></li><li><a href="#">中国玉网</a></li><li><a href="#">普陀山旅游</a></li></ul>
+	<ul>
+		<li><a href="#">网联传媒</a></li><li><a href="#">临汾旅游网</a></li><li><a href="#">贵州旅游在线</a></li><li><a href="#">南阳鲜花网</a></li><li><a href="#">黄山旅游</a></li><li><a href="#"> 开封结婚网</a></li><li><a href="#">新疆旅游</a></li><li><a href="#">驴妈妈旅游网</a></li><ul>
+		<ul>
+		<li><a href="#">绿野户外网</a></li><li><a href="#">北京旅游</a></li><li><a href="#">坝上草原旅游</a></li><li><a href="#">南阳律师网</a></li><ul>
+	</div>
+<div class="ft">
+	<div class="dy">
+                     <ul>
+						<li><a href="#"><b>网站首页</b></a></li>
+						<li><a href="#"><b>关于我们</b></a></li>
+						<li><a href="#"><b>网站建设</b></a></li>
+						<li><a href="#"><b>广告服务</b></a></li>
+						<li><a href="#"><b>客服中心</b></a></li>
+						<li><a href="#"><b>联系我们</b></a></li>
+						<li><a href="#"><b>免责声明</b></a></li>
+					</ul>
+    </div>	
+  </div>
+			<div class="rt">Copyright 2006-2012 www.okny.cn All Rights Reserved 版权所有：南阳旅游网  备案序号:豫ICP备06010205<img src="img/20180731172822.jpg"> 豫公网安备 41130202000247号
+<br/>地址：南阳市独山大道中段   电话：0377-63205555   13663998848   E-Mail:sjwb666@163.com  技术支持：天润科技<br/>
+本站法律顾问：罗中彬律师  河南先邦律师事务所</div>
+</div>
+</body>
+</html>
