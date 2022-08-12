@@ -6,6 +6,7 @@ body {
   color: #2b2c48;
   font-family: "Jost", sans-serif;
   background-image: url(../img/bg.jpg);
+  background:rgba(255,255,255,0.3);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
